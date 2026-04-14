@@ -1,6 +1,5 @@
--------------------------------------------------
+
 -- variables
--------------------------------------------------
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local GroupInfo = require(ReplicatedStorage.Information.GroupInfo)
@@ -23,9 +22,8 @@ local Blacklist = {
 local ccopen = false
 local auth = false
 
--------------------------------------------------
 -- checks
--------------------------------------------------
+
 local function updateAuth()
 	auth =
 		player:IsInGroup(GroupInfo.SCPF) and player:GetRankInGroupAsync(GroupInfo.SCPF) >= 250
@@ -45,15 +43,14 @@ local function updateAuth()
 	end
 end
 
--- Initial auth
+-- initial auth
 updateAuth()
 
--- Update on team change
+-- update on team change
 player:GetPropertyChangedSignal("Team"):Connect(updateAuth)
 
--------------------------------------------------
 -- toggle chatbox
--------------------------------------------------
+
 UserInputService.InputEnded:Connect(function(input)
 	if input.KeyCode ~= Enum.KeyCode.LeftBracket then
 		return
