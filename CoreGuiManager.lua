@@ -1,14 +1,15 @@
-
--- variables/required stuff
+-------------------------------------------------
+-- variables
+-------------------------------------------------
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Groups = require(ReplicatedStorage.Information.Groups)
+local GroupInfo = require(ReplicatedStorage.Information.GroupInfo)
 local Players = game:GetService("Players")
 
-local plr = Players.LocalPlayer
-local sgui = game:GetService("StarterGui")
-local cs = game:GetService("TextChatService")
-local uis = game:GetService("UserInputService")
+local player = Players.LocalPlayer
+local StarterGUI = game:GetService("StarterGui")
+local ChatService = game:GetService("TextChatService")
+local UserInputService = game:GetService("UserInputService")
 
 local Blacklist = {
 	["Security Corps"] = true,
@@ -22,44 +23,47 @@ local Blacklist = {
 local ccopen = false
 local auth = false
 
-
+-------------------------------------------------
 -- checks
+-------------------------------------------------
 local function updateAuth()
 	auth =
-		plr:IsInGroup(Groups.SCPF) and plr:GetRankInGroupAsync(Groups.SCPF) >= 250
-		or plr:IsInGroup(Groups.MAD) and plr:GetRankInGroupAsync(Groups.MAD) >= 50 and plr.Team == game.Teams["Manufacturing Department"]
-		or plr:IsInGroup(Groups.MOD) and plr:GetRankInGroupAsync(Groups.MOD) >= 50
-		or (plr.Team == game.Teams["Anomaly Actors"])
-		or (plr.Team == game.Teams["Lore Department"])
+		player:IsInGroup(GroupInfo.SCPF) and player:GetRankInGroupAsync(GroupInfo.SCPF) >= 250
+		or player:IsInGroup(GroupInfo.MAD) and player:GetRankInGroupAsync(GroupInfo.MAD) >= 50 and player.Team == game.Teams["Manufacturing Department"]
+		or player:IsInGroup(GroupInfo.MOD) and player:GetRankInGroupAsync(GroupInfo.MOD) >= 50
+		or (player.Team == game.Teams["Anomaly Actors"])
+		or (player.Team == game.Teams["Lore Department"])
 
-	local teamName = plr.Team
+	local teamName = player.Team
 
-	-- playerlist checks
-	sgui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, auth and not Blacklist[teamName])
+	-- PlayerList now also respects blacklist
+	StarterGUI:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, auth and not Blacklist[teamName])
 
 	if ccopen and (not auth or Blacklist[teamName]) then
-		cs.ChatWindowConfiguration.Enabled = false
+		ChatService.ChatWindowConfiguration.Enabled = false
 		ccopen = false
 	end
 end
 
--- initial check
+-- Initial auth
 updateAuth()
 
 -- Update on team change
-plr:GetPropertyChangedSignal("Team"):Connect(updateAuth)
+player:GetPropertyChangedSignal("Team"):Connect(updateAuth)
 
+-------------------------------------------------
 -- toggle chatbox
-uis.InputEnded:Connect(function(input)
+-------------------------------------------------
+UserInputService.InputEnded:Connect(function(input)
 	if input.KeyCode ~= Enum.KeyCode.LeftBracket then
 		return
 	end
 
-	local teamName = plr.Team and plr.Team.Name or ""
+	local teamName = player.Team and player.Team.Name or ""
 
 	if not auth then return end
 	if Blacklist[teamName] then return end
 
 	ccopen = not ccopen
-	cs.ChatWindowConfiguration.Enabled = ccopen
+	ChatService.ChatWindowConfiguration.Enabled = ccopen
 end)
