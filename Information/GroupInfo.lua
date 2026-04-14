@@ -32,7 +32,7 @@ return {
 	
 	-- SC Divisions
 	CIU = 35385764, -- Crisis Intervention Unit
-	OSS = 35385750, -- Operational Security Services
+	OSS = 35385750, -- Operational Support Services
 	MP = 35385759, -- Military Police
 
 	-- Mobile Task Forces
