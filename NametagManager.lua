@@ -129,7 +129,7 @@ local function applyNametagToCharacter(character)
 			end
 		elseif player.Team == game.Teams["Manufacturing Department"] then
 			if player:isInGroupAsync(GroupInfo.MAD) then
-				local prefix = teamPrefixes["Lore Department"]
+				local prefix = teamPrefixes["Manufacturing Department"]
 				local rank = player:GetRoleInGroupAsync(GroupInfo.MAD)
 				setPrefixRankLabel(textLabel, prefix, color3ToHex(teamColor), rank, color3ToHex(lightenColor(teamColor, 0.75)))
 			end
