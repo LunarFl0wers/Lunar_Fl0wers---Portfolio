@@ -86,7 +86,7 @@ local function populateButtons()
         -- Set color
         if division.name == "None" then
             button.BackgroundColor3 = Color3.fromHex("#FFFFFF")
-e       else
+        else
             button.BackgroundColor3 = Color3.fromHex(division.color)
         end
 
