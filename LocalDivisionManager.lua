@@ -85,15 +85,11 @@ local function populateButtons()
         
         -- Set color
         if division.name == "None" then
-            button.BackgroundColor3 = Color3.new(0.8, 0.8, 0.8)
-        else
-            local hex = division.color:gsub("#", "")
-            local r = tonumber(hex:sub(1, 2), 16) / 255
-            local g = tonumber(hex:sub(3, 4), 16) / 255
-            local b = tonumber(hex:sub(5, 6), 16) / 255
-            button.BackgroundColor3 = Color3.new(r, g, b)
+            button.BackgroundColor3 = Color3.fromHex("#FFFFFF")
+e       else
+            button.BackgroundColor3 = Color3.fromHex(division.color)
         end
-        
+
         -- Click handler with debugging
         button.MouseButton1Click:Connect(function()
             local selectedDivision = button:GetAttribute("DivisionName")
